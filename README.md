@@ -20,7 +20,7 @@ Last tested on ACF v4 (4.4.5) & ACF Pro (5.3.3.2).
 
 ### Installation
 
-Since this a WordPress plugin just search for "Advanced Custom Fields: Focal Point" in the plugins section in the admin and install it from there. If you would rather install it manually you can do the following:
+Since this a WordPress plugin just search for "ACF: Focal Point" in the plugins section in the admin and install it from there. If you would rather install it manually you can do the following:
 
 1. Download and extract the plugin
 2. Copy the `acf-focal_point` folder into your `wp-content/plugins` folder
