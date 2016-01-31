@@ -20,9 +20,9 @@ Works similar to a traditional ACF image field, but once an image is selected an
 
 Image returned as either tag or object to use within themes. Includes responsify.js.
 
-See Frequently Asked Questions for troubleshooting.
+See Frequently Asked Questions for and detailed usage.
 
-Last tested on ACF v4 (4.4.5) & ACF Pro (5.3.3.2) Compatible.
+Last tested on ACF v4 (4.4.5) & ACF Pro (5.3.3.2).
 
 
 
