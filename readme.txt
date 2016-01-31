@@ -1,4 +1,4 @@
-=== Advanced Custom Fields: Focal Point ===
+=== ACF: Focal Point ===
 Contributors: evuze
 Donate link: https://github.com/evu/acf-focal_point
 Tags: acf, advanced custom fields, wp, wordpress, focal-point, photography, image, responsive, responsify
