@@ -1,0 +1,37 @@
+.acf-focal_point-canvas {
+	width: 100%;
+	cursor: crosshair;
+}
+
+.acf-focal_point-image {
+	display: none;
+}
+.acf-focal_point .has-image {
+	display: none;
+	position: relative;
+}
+.acf-focal_point .acf-button-delete {
+	position: absolute;
+	top: -11px;
+	right: -11px;
+	z-index: 1;
+	cursor: pointer;
+}
+.acf-focal_point .acf-icon {
+	opacity: 0;
+	transition: .25s ease-in-out;
+}
+.acf-focal_point .acf-icon:hover {
+	color: #D54E21;
+}
+.acf-focal_point .has-image:hover .acf-icon {
+	opacity: 1;
+}
+.acf-focal_point.active .no-image {
+	display: none;
+}
+
+.acf-focal_point.active .has-image {
+	display: block;
+	float: left;
+}
