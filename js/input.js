@@ -23,13 +23,13 @@
 
 		// Hold/get our values
 		var values = {
-				id: 	$id.val(),
-				top: 	$top.val(),
-				left: 	$left.val(),
-				width: 	$right.val(),
-				height: $bottom.val(),
-				size: 	$fp.data('preview_size')
-			}
+			id: 	$id.val(),
+			top: 	$top.val(),
+			left: 	$left.val(),
+			width: 	$right.val(),
+			height: $bottom.val(),
+			size: 	$fp.data('preview_size')
+		};
 		
 
 		// DOM elements
@@ -93,11 +93,15 @@
 				// Make UI active (hide add image button, show canvas)
 	        	$fp.addClass('active');
 
+	        	if (src === undefined) {
+	        		src = attachment;
+	        	}
+
 	        	// Set image to new src, triggering on load
 				$img.attr('src', src.url);
 
 				// Update our post values and values obj
-				$id.val(attachment.id)
+				$id.val(attachment.id);
 				values.id = attachment.id;
 
 			});
@@ -182,7 +186,7 @@
 
 			// Ratios previously worked out (resizeCanvas), so it should fill canvas
 	        ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
-	    };
+	    }
 
 	    // Used to draw focal point on canvas
 		function drawFocus(x, y, w, h) {
@@ -190,7 +194,7 @@
 	        ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
 	        ctx.strokeRect(x, y, w, h);
 	        ctx.fillRect(x, y, w, h);
-	    };
+	    }
 
 	    // Used to draw focal point on load
         function redrawFocus() {
@@ -207,7 +211,7 @@
 	        	// draw focual point
 	        	drawFocus(x, y, w, h);
         	}
-        };
+        }
 
         // Shortcut to calling canvas draw functions
         function drawCanvas() {
@@ -216,7 +220,7 @@
 	    	resizeCanvas();
 	        drawImg();
 			redrawFocus();
-        };
+        }
 
         // Used to clear canvas
 	    function clearCanvas() {
@@ -224,7 +228,7 @@
 	    	// Faster than clearRect
 	        ctx.fillStyle = "#ffffff";
 	        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        };
+        }
 
         // Used to set up canvas sizing
         function resizeCanvas() {
@@ -274,7 +278,7 @@
 	    	// Remember our new sizes
 	    	canvasWidth = new_width;
 	        canvasHeight = new_height;
-        };
+        }
 		
 	}
 	

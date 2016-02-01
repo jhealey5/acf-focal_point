@@ -146,15 +146,15 @@ class acf_field_focal_point extends acf_field {
 		$field = array_merge($this->defaults, $field);
 		
 		// Get set image id
-		$id = $field['value']['id'];
+		$id = isset($field['value']['id'])) ? $field['value']['id'] : '';
 
 
 		// data vars
 		$data = array(
-			'top'		=>	$field['value']['top'],
-			'left'		=>	$field['value']['left'],
-			'right'		=>	$field['value']['right'],
-			'bottom'	=>	$field['value']['bottom'],
+			'top'		=>	isset($field['value']['top']) ? $field['value']['top'] : '',
+			'left'		=>	isset($field['value']['left']) ? $field['value']['left'] : '',
+			'right'		=>	isset($field['value']['right']) ? $field['value']['right'] : '',
+			'bottom'	=>	isset($field['value']['bottom']) ? $field['value']['bottom'] : '',
 		);
 
 		
