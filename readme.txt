@@ -4,7 +4,7 @@ Donate link: https://github.com/evu/acf-focal_point
 Tags: acf, advanced custom fields, wp, wordpress, focal-point, photography, image, responsive, responsify
 Requires at least: 4.2
 Tested up to: 4.2
-Stable tag: trunk
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
