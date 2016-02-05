@@ -20,7 +20,7 @@ Works similar to a traditional ACF image field, but once an image is selected an
 
 Image returned as either tag or object to use within themes. Includes responsify.js.
 
-See Frequently Asked Questions for and detailed usage.
+See Frequently Asked Questions for more info and detailed usage.
 
 Last tested on ACF v4 (4.4.5) & ACF Pro (5.3.3.2).
 
@@ -54,7 +54,7 @@ Image tag returns some additional markup on images:
 
 The Image object now has a few more values too:
 
-```
+`
 'focal_point' 	=> array(
 	'class'		=> 'js-focal-point-image',
 	'top'  		=> $value['top'],
@@ -62,11 +62,11 @@ The Image object now has a few more values too:
 	'right'		=> $value['right'],
 	'bottom' 	=> $value['bottom']
 )
-```
+`
 
 `'class'` refers to the class that Responsify.js is called on. This needs to be on the image tag to work.
 
-`'top'`, `'left'`, `'right'` and `'bottom'` refer to the `data-focus` attributes used to control focal point. 
+`'top', 'left', 'right'` and `'bottom'` refer to the `data-focus` attributes used to control focal point. 
 
 Build image as per above tag. Responsify is called on load and resize automatically on `img.js-focal-point-image`.
 

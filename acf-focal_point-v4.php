@@ -146,7 +146,7 @@ class acf_field_focal_point extends acf_field {
 		$field = array_merge($this->defaults, $field);
 		
 		// Get set image id
-		$id = isset($field['value']['id'])) ? $field['value']['id'] : '';
+		$id = (isset($field['value']['id'])) ? $field['value']['id'] : '';
 
 
 		// data vars
@@ -159,19 +159,19 @@ class acf_field_focal_point extends acf_field {
 
 		
 		// If we already have an image set...
-		if ( $id && is_numeric($id) ) {
+		if ($id) {
 			
 			// Get image by ID, in size set via options
 			$img = wp_get_attachment_image_src($id, $field['preview_size']);
-			
-			// If image found...
-			// Set to hide add image button / show canvas
-			$is_active 	= ($img) ? 'active' : '';
-
-			// And set src
-			$url = ($img) ? $img[0] : '';
 						
 		}
+			
+		// If image found...
+		// Set to hide add image button / show canvas
+		$is_active 	= ($id) ? 'active' : '';
+
+		// And set src
+		$url = ($id) ? $img[0] : '';
 		
 		
 		// create Field HTML

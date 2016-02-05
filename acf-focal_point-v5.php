@@ -160,19 +160,19 @@ class acf_field_focal_point extends acf_field {
 
 		
 		// If we already have an image set...
-		if ( $id && is_numeric($id) ) {
+		if ($id) {
 			
 			// Get image by ID, in size set via options
 			$img = wp_get_attachment_image_src($id, $field['preview_size']);
-			
-			// If image found...
-			// Set to hide add image button / show canvas
-			$is_active 	= ($img) ? 'active' : '';
-
-			// And set src
-			$url = ($img) ? $img[0] : '';
 						
 		}
+			
+		// If image found...
+		// Set to hide add image button / show canvas
+		$is_active 	= ($id) ? 'active' : '';
+
+		// And set src
+		$url = ($id) ? $img[0] : '';
 		
 		
 		// create Field HTML
@@ -186,7 +186,7 @@ class acf_field_focal_point extends acf_field {
 	<?php endforeach ?>
 
 	<div class="has-image">
-		<span class="acf-button-delete acf-icon acf-icon-cancel dark" data-name="remove"></span>
+		<span class="acf-button-delete acf-icon -cancel acf-icon-cancel dark" data-name="remove"></span>
 		<img class="acf-focal_point-image" src="<?php echo $url; ?>" />
 		<canvas class="acf-focal_point-canvas"></canvas>
 	</div>

@@ -33,7 +33,7 @@
 		
 
 		// DOM elements
-		var img  = $img.get(0),
+		var img  	 = $img.get(0),
 			canvas 	 = $canvas.get(0);
 
 
@@ -130,8 +130,6 @@
 			// And our values obj, but just one value (to check later) will do.
 	    	values.top = null;
 	    });
-
-
 
 		// When we click on canvas...
 	    canvas.addEventListener("mousedown", function(e) {
@@ -240,21 +238,21 @@
 	        	// Get image width/height ratio
 	        	ratio 			= natural_width / natural_height,
 
-	        	// Get parent width (annoyingly, we haveto account for delete button)
-	        	fp_width 		= $fp.width() - ($del.width()/2),
+	        	// Get parent width (annoyingly, we have to account for delete button)
+	        	parent_width 		= $el.parent().width() - ($del.width()/2),
 
 	        	// To hold new canvas widths
 	        	new_width, new_height;
 
 
 	        // If image is naturally bigger than parent...
-	        if (natural_width > fp_width) {
+	        if (natural_width > parent_width) {
 
 	        	// Set to full width (same as parent)
-	        	new_width 	= fp_width;
+	        	new_width 	= parent_width;
 
 	        	// And use ratio to work out new proportional height
-	        	new_height 	= fp_width / ratio;
+	        	new_height 	= parent_width / ratio;
 
 	        // Otherwise...
 	        } else {

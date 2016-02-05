@@ -26,7 +26,7 @@ Since this a WordPress plugin just search for "ACF: Focal Point" in the plugins 
 2. Copy the `acf-focal_point` folder into your `wp-content/plugins` folder
 3. Activate the Focal Point plugin via the plugins admin page
 4. Create a new field via ACF and select the Focal Point type
-5. Please refer to the Frequently Asked Questions for more info regarding the field type settings
+5. Refer to the Frequently Asked Questions for more info regarding the field type settings
 
 -----------------------
 
