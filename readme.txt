@@ -4,7 +4,7 @@ Donate link: https://github.com/evu/acf-focal_point
 Tags: acf, advanced custom fields, wp, wordpress, focal-point, photography, image, responsive, responsify
 Requires at least: 4.2
 Tested up to: 4.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,11 @@ Nothing to upgrade just yet!
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.0 =
 * Initial version
+
+= 1.0.1 =
+* Fixed bug with image not displaying on changing acf tabs.
+* fixes missing class from delete icon
+* fixed undefined variables
 
