@@ -4,7 +4,7 @@
 Plugin Name: ACF: Focal Point
 Plugin URI: https://github.com/evu/acf-focal_point
 Description: Adds a new field type to Advanced Custom Fields allowing users to draw focal points on images. Utilises Responsify.js
-Version: 1.0.1
+Version: 1.0.2
 Author: John Healey
 Author URI: http://twitter.com/lostinnovation
 License: GPLv2 or later

@@ -4,7 +4,7 @@ Donate link: https://github.com/evu/acf-focal_point
 Tags: acf, advanced custom fields, wp, wordpress, focal-point, photography, image, responsive, responsify
 Requires at least: 4.2
 Tested up to: 4.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,7 +66,7 @@ The Image object now has a few more values too:
 
 `'class'` refers to the class that Responsify.js is called on. This needs to be on the image tag to work.
 
-`'top', 'left', 'right'` and `'bottom'` refer to the `data-focus` attributes used to control focal point. 
+`'top', 'left', 'right' and 'bottom'` refer to the `data-focus` attributes used to control focal point. 
 
 Build image as per above tag. Responsify is called on load and resize automatically on `img.js-focal-point-image`.
 
@@ -121,4 +121,7 @@ Nothing to upgrade just yet!
 * Fixed bug with image not displaying on changing acf tabs.
 * fixes missing class from delete icon
 * fixed undefined variables
+
+= 1.0.2 =
+* Fixed bug with image not resizing on changing custom acf tabs.
 

@@ -131,6 +131,15 @@
 	    	values.top = null;
 	    });
 
+	    // Make sure image is sized correctly after being unhidden
+	    $('.acf-tab-button').on('click', function(){
+
+	    	// Needs a timeout of 0 for some reason.
+	    	setTimeout(function(){
+	    		drawCanvas();
+	    	}, 0);
+	    });
+
 		// When we click on canvas...
 	    canvas.addEventListener("mousedown", function(e) {
 
