@@ -192,7 +192,9 @@
 		function drawImg() {
 
 			// Ratios previously worked out (resizeCanvas), so it should fill canvas
-	        ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+			if ((canvasWidth > 0) && (canvasHeight > 0)) {
+				ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+			}
 	    }
 
 	    // Used to draw focal point on canvas
