@@ -349,8 +349,34 @@ class acf_field_focal_point extends acf_field {
 		
 		return $value;
 	}
-	
-	
+
+	/*
+	*  validate_value()
+	*
+	*  This filter is used to perform validation on the value prior to saving.
+	*  All values are validated regardless of the field's required setting. This allows you to validate and return
+	*  messages to the user if the value is not correct
+	*
+	*  @type	filter
+	*  @date	11/02/2014
+	*  @since	5.0.0
+	*
+	*  @param	$valid (boolean) validation status based on the value and the field's required setting
+	*  @param	$value (mixed) the $_POST value
+	*  @param	$field (array) the field array holding all the field options
+	*  @param	$input (string) the corresponding input name for $_POST value
+	*  @return	$valid
+	*/
+
+	function validate_value( $valid, $value, $field, $input ){
+
+		if ($field['required'] === 1 && empty($value['id'])) {
+			return false;
+		}
+
+		return $valid;
+	}
+
 }
 
 
