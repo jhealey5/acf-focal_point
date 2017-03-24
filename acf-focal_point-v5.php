@@ -223,6 +223,7 @@ class acf_field_focal_point extends acf_field {
 		// register & include JS
 		wp_register_script( 'acf-input-focal_point', "{$dir}js/input.js", array('acf-input') );
 		wp_enqueue_script('acf-input-focal_point');
+    	wp_enqueue_media();
 		
 		
 		// register & include CSS
