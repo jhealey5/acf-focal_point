@@ -44,8 +44,8 @@ class acf_field_focal_point extends acf_field {
 		*/
 		
 		$this->defaults = array(
-			'save_format'	=>	'tag',
-			'preview_size'	=>	'large',
+			'save_format'	=>	'object',
+			'preview_size'	=>	'medium',
 			'image_size'	=>	'large'
 		);
 		
@@ -97,7 +97,7 @@ class acf_field_focal_point extends acf_field {
 			'name'			=> 'save_format',
 			'layout'		=>	'horizontal',
 			'choices'		=> 	array(
-				'object'		=>	__("Image Object",'acf'),
+				'object'		=>	__("Object",'acf'),
 				'tag'			=>	__("Image Tag",'acf')
 			)
 		));
@@ -153,8 +153,6 @@ class acf_field_focal_point extends acf_field {
 		$data = array(
 			'top'		=>	isset($field['value']['top']) ? $field['value']['top'] : '',
 			'left'		=>	isset($field['value']['left']) ? $field['value']['left'] : '',
-			'right'		=>	isset($field['value']['right']) ? $field['value']['right'] : '',
-			'bottom'	=>	isset($field['value']['bottom']) ? $field['value']['bottom'] : '',
 		);
 		
 
@@ -186,9 +184,12 @@ class acf_field_focal_point extends acf_field {
 	<?php endforeach ?>
 
 	<div class="has-image">
+		<svg class="acf-focal_point-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" role="img" aria-hidden="true" focusable="false">
+			<path class="components-focal-point-picker__icon-outline" d="M15 1C7.3 1 1 7.3 1 15s6.3 14 14 14 14-6.3 14-14S22.7 1 15 1zm0 22c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"></path>
+			<path class="components-focal-point-picker__icon-fill" d="M15 3C8.4 3 3 8.4 3 15s5.4 12 12 12 12-5.4 12-12S21.6 3 15 3zm0 22C9.5 25 5 20.5 5 15S9.5 5 15 5s10 4.5 10 10-4.5 10-10 10z"></path>
+		</svg>
 		<span class="acf-button-delete acf-icon -cancel acf-icon-cancel dark" data-name="remove"></span>
 		<img class="acf-focal_point-image" src="<?php echo $url; ?>" />
-		<canvas class="acf-focal_point-canvas"></canvas>
 	</div>
 
 	<div class="clear"></div>
@@ -223,7 +224,6 @@ class acf_field_focal_point extends acf_field {
 		// register & include JS
 		wp_register_script( 'acf-input-focal_point', "{$dir}js/input.js", array('acf-input') );
 		wp_enqueue_script('acf-input-focal_point');
-    	wp_enqueue_media();
 		
 		
 		// register & include CSS
@@ -274,12 +274,11 @@ class acf_field_focal_point extends acf_field {
 
 			// Get image alt
 			$alt = get_post_meta($id, '_wp_attachment_image_alt', true);
-
+			
+			$style = sprintf( "background-image('%1$s'); background-position: %2$s%% %3$s%%", $src[0], $value['top']*100, $value['left']*100 );
+			
 			// Create tag
-			$tag  = '<img class="js-focal-point-image" src="' .$src[0]. '" ';
-			$tag .= 'alt="' .$alt. '"  width="' .$src[1]. '" height="' .$src[2]. '" ';
-			$tag .= 'data-focus-left="' .$value['left']. '" data-focus-top="' .$value['top']. '" ';
-			$tag .= 'data-focus-right="' .$value['right']. '" data-focus-bottom="' .$value['bottom']. '" />';
+			$tag  = '<div class="acf-focal-point-image" style="'.$style.'"></div>';
 
 			// Return tag
 			$value = $tag;
@@ -305,11 +304,8 @@ class acf_field_focal_point extends acf_field {
 				'id' 			=> $attachment->ID,
 
 				'focal_point' 	=> array(
-					'class'		=> 'js-focal-point-image',
-					'top'  		=> $value['top'],
-					'left' 		=> $value['left'],
-					'right'		=> $value['right'],
-					'bottom' 	=> $value['bottom']
+					'top'  		=> $value['top'] ?: 0.5,
+					'left' 		=> $value['left'] ?: 0.5,
 				),
 
 				'alt' 			=> get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
@@ -350,34 +346,8 @@ class acf_field_focal_point extends acf_field {
 		
 		return $value;
 	}
-
-	/*
-	*  validate_value()
-	*
-	*  This filter is used to perform validation on the value prior to saving.
-	*  All values are validated regardless of the field's required setting. This allows you to validate and return
-	*  messages to the user if the value is not correct
-	*
-	*  @type	filter
-	*  @date	11/02/2014
-	*  @since	5.0.0
-	*
-	*  @param	$valid (boolean) validation status based on the value and the field's required setting
-	*  @param	$value (mixed) the $_POST value
-	*  @param	$field (array) the field array holding all the field options
-	*  @param	$input (string) the corresponding input name for $_POST value
-	*  @return	$valid
-	*/
-
-	function validate_value( $valid, $value, $field, $input ){
-
-		if ($field['required'] === 1 && empty($value['id'])) {
-			return false;
-		}
-
-		return $valid;
-	}
-
+	
+	
 }
 
 

@@ -1,14 +1,13 @@
-.acf-focal_point-canvas {
-	width: 100%;
-	cursor: crosshair;
-}
-
 .acf-focal_point-image {
-	display: none;
+	display: inline-block;
 }
 .acf-focal_point .has-image {
 	display: none;
 	position: relative;
+	cursor: crosshair;
+}
+.acf-focal_point.active .has-image {
+	display: inline-block;
 }
 .acf-focal_point .acf-button-delete {
 	position: absolute;
@@ -31,7 +30,22 @@
 	display: none;
 }
 
-.acf-focal_point.active .has-image {
-	display: block;
-	float: left;
+.acf-focal_point-icon {
+	display: none; 
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: transparent;
+	height: 30px;
+	opacity: .8;
+	will-change: transform;
+	width: 30px;
+	z-index: 10000;
 }
+.acf-focal_point.active .acf-focal_point-icon {
+	display: block;
+}
+
+.acf-focal_point-icon .components-focal-point-picker__icon-fill { fill: #0085ba; }
+.acf-focal_point-icon .components-focal-point-picker__icon-outline { fill: #ffffff; }

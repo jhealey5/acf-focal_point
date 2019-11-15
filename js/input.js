@@ -5,70 +5,44 @@
 
 		// Cache jquery selectors
 		// Values to get/set
-		var $id 	= $el.find('.acf-focal_point-id'),
-			$top 	= $el.find('.acf-focal_point-top'),
-			$left 	= $el.find('.acf-focal_point-left'),
-			$right 	= $el.find('.acf-focal_point-right'),
-			$bottom = $el.find('.acf-focal_point-bottom'),
+		var $id		= $el.find('.acf-focal_point-id'),
+			$top	= $el.find('.acf-focal_point-top'),
+			$left	= $el.find('.acf-focal_point-left'),
 
 			// Elements to get/set 
-			$fp 	= $el.find('.acf-focal_point'),
-			$img 	= $el.find('.acf-focal_point-image'),
-			$canvas = $el.find('.acf-focal_point-canvas'),
+			$fp		= $el.find('.acf-focal_point'),
+			$img	= $el.find('.acf-focal_point-image'),
+			$icon	= $el.find('.acf-focal_point-icon'),
 
 			// Buttons to trigger events
-			$add 	= $el.find('.add-image'),
-			$del 	= $el.find('.acf-button-delete');
+			$add	= $el.find('.add-image'),
+			$del	= $el.find('.acf-button-delete');
 
 
 		// Hold/get our values
 		var values = {
-			id: 	$id.val(),
-			top: 	$top.val(),
-			left: 	$left.val(),
-			width: 	$right.val(),
-			height: $bottom.val(),
-			size: 	$fp.data('preview_size')
+			id:		$id.val(),
+			top:	$top.val() == '' ? 0.5 : $top.val(),
+			left:	$left.val() == '' ? 0.5 : $left.val(),
+			size:	$fp.data('preview_size')
 		};
 		
 
 		// DOM elements
-		var img  	 = $img.get(0),
-			canvas 	 = $canvas.get(0);
-
+		var img		 = $img.get(0),
+			icon = $icon.get(0);
 
 		// To hold WP media frame
 		var file_frame;
 
-
-		// Vars for Canvas work
-		var ctx 		= canvas.getContext("2d"),
-        	rect 		= {},
-	        mouseDown 	= false,
-
-	        canvasWidth,
-	        canvasHeight;
-
-
-
-
-	    // When we've loaded an image, draw the canvas.
-	    // (either on dom load or adding new image from WP media manager)
-		$img.on("load", drawCanvas).each(function() {
-	    	
-	    	// Make sure to trigger load event by triggering load
-	    	// after jquery has done it's iteration
-			if (this.complete) {
-				$(this).load();
-			}
+		// When we've loaded an image, draw the canvas.
+		// (either on dom load or adding new image from WP media manager)
+		$img.on("load", function(e){
+			icon.style.left = (values.left * 100) + "%";
+			icon.style.top = (values.top * 100) + "%";
 		});
 
-
-	    // When resizing the page, redraw the canvas.
-	    $(window).on('resize', drawCanvas);
-
-
-	    // When we click the add image button...
+		// When we click the add image button...
 		$add.on('click', function(){
 
 			// If the media frame already exists, reopen it.
@@ -87,21 +61,21 @@
 			file_frame.on('select', function() {
 
 				// Get selected image objects
-				var attachment 	= file_frame.state().get('selection').first().toJSON(),
-					src 		= attachment.sizes[values.size];
+				var attachment	= file_frame.state().get('selection').first().toJSON(),
+					src			= attachment.sizes[values.size];
 
 				// Make UI active (hide add image button, show canvas)
-	        	$fp.addClass('active');
+				$fp.addClass('active');
 
-	        	if (src === undefined) {
-	        		src = attachment;
-	        	}
+				if (src === undefined) {
+					src = attachment;
+				}
 
-	        	// Set image to new src, triggering on load
+				// Set image to new src
 				$img.attr('src', src.url);
 
 				// Update our post values and values obj
-				$id.val(attachment.id);
+				$id.val(attachment.id).trigger('change');
 				values.id = attachment.id;
 
 			});
@@ -112,183 +86,35 @@
 
 
 		// When we click the delete image button...
-	    $del.on('click', function(){
+		$del.on('click', function(){
 
-	    	// Reset DOM image attributes
-	    	$img.removeAttr('src width height');
+			// Reset DOM image attributes
+			$img.removeAttr('src width height');
 
-	    	// Hide canvas and show add image button
-	    	$fp.removeClass('active');
+			// Hide canvas and show add image button
+			$fp.removeClass('active');
 
-	    	// Reset our post values
+			// Reset our post values
 			$id.val('');
 			$top.val('');
-			$left.val('');
-			$right.val('');
-			$bottom.val('');
+			$left.val('').trigger('change');
+			
+			// reset to default
+			icon.style.left = null;
+			icon.style.top = null;
+		});
 
-			// And our values obj, but just one value (to check later) will do.
-	    	values.top = null;
-	    });
-
-	    // Make sure image is sized correctly after being unhidden
-	    $('.acf-tab-button').on('click', function(){
-
-	    	// Needs a timeout of 0 for some reason.
-	    	setTimeout(function(){
-	    		drawCanvas();
-	    	}, 0);
-	    });
-
-		// When we click on canvas...
-	    canvas.addEventListener("mousedown", function(e) {
-
-	    	// Track our position
-	        rect.startX = e.layerX;
-	        rect.startY = e.layerY;
-
-	        // And allow drawing
-	        mouseDown 	= true;
-	    }, false);
-
-
-	    // When we stopped holding down mouse button, prevent further drawing.
-	    canvas.addEventListener("mouseup", function() { mouseDown = false; }, false);
-
-
-	    // When mouse button is down and we're moving the mouse
-	    canvas.addEventListener("mousemove", function(e) {
-
-	        if (mouseDown) {
-
-	        	// Keep drawing image as bottom layer 
-	        	// (otherwise we get multiple layers of the focus, making it opaque)
-	            drawImg();
-	            
-	            // Get distance from when we first clicked on canvas
-	            rect.w 			= (e.layerX) - rect.startX;
-	            rect.h 			= (e.layerY) - rect.startY;
-
-	            // Put positions in our values object
-	            values.top 		= rect.startY / canvasHeight;
-	            values.left 	= rect.startX / canvasWidth;
-	            values.width 	= (rect.w + rect.startX) / canvasWidth;
-	            values.height 	= (rect.h + rect.startY) / canvasHeight;
-
-	            // Set post values
-            	$top.val(values.top.toFixed(2));
-            	$left.val(values.left.toFixed(2));
-            	$right.val(values.width.toFixed(2));
-            	$bottom.val(values.height.toFixed(2));
-
-            	// draw focal point
-	            drawFocus(rect.startX, rect.startY, rect.w, rect.h);
-	        }
-	    }, false);
-	    
-		
-
-		// Used to draw the image onto the canvas
-		function drawImg() {
-
-			// Ratios previously worked out (resizeCanvas), so it should fill canvas
-			if ((canvasWidth > 0) && (canvasHeight > 0)) {
-				ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
-			}
-	    }
-
-	    // Used to draw focal point on canvas
-		function drawFocus(x, y, w, h) {
-			ctx.strokeStyle = "rgba(255, 0, 0, 0.6)"
-	        ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-	        ctx.strokeRect(x, y, w, h);
-	        ctx.fillRect(x, y, w, h);
-	    }
-
-	    // Used to draw focal point on load
-        function redrawFocus() {
-
-        	// if existing values set...
-        	if (values.top !== null) {
-
-        		// Get our positions
-	        	var x = values.left * canvasWidth, 
-	        		y = values.top * canvasHeight, 
-	        		w = (values.width * canvasWidth) - x, 
-	        		h = (values.height  * canvasHeight) - y;
-
-	        	// draw focual point
-	        	drawFocus(x, y, w, h);
-        	}
-        }
-
-        // Shortcut to calling canvas draw functions
-        function drawCanvas() {
-
-        	// resize, redraw, refocus
-	    	resizeCanvas();
-	        drawImg();
-			redrawFocus();
-        }
-
-        // Used to clear canvas
-	    function clearCanvas() {
-
-	    	// Faster than clearRect
-	        ctx.fillStyle = "#ffffff";
-	        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        }
-
-        // Used to set up canvas sizing
-        function resizeCanvas() {
-
-        	// Get natural imge sizes
-	        var natural_width 	= img.naturalWidth,
-	        	natural_height 	= img.naturalHeight,
-
-	        	// Get image width/height ratio
-	        	ratio 			= natural_width / natural_height,
-
-	        	// Get parent width (annoyingly, we have to account for delete button)
-	        	parent_width 		= $el.parent().width() - ($del.width()/2),
-
-	        	// To hold new canvas widths
-	        	new_width, new_height;
-
-
-	        // If image is naturally bigger than parent...
-	        if (natural_width > parent_width) {
-
-	        	// Set to full width (same as parent)
-	        	new_width 	= parent_width;
-
-	        	// And use ratio to work out new proportional height
-	        	new_height 	= parent_width / ratio;
-
-	        // Otherwise...
-	        } else {
-
-	        	// Set to same width/height as image
-		        new_width 	= natural_width;
-		        new_height 	= natural_height;
-	        }
-
-
-	        // Set canvas DOM width
-        	$canvas.width(new_width);
-        	$canvas.height(new_height);
-
-        	// And canvas attribute widths 
-        	// (otherwise it gets a weird coord system)
-        	canvas.width = new_width;
-	    	canvas.height = new_height;
-
-
-	    	// Remember our new sizes
-	    	canvasWidth = new_width;
-	        canvasHeight = new_height;
-        }
-		
+		// When we click on the image...
+		img.addEventListener("click", function(e) {
+			var rect = img.getBoundingClientRect();
+			var top = (e.clientY - rect.y) / rect.height;
+			var left = (e.clientX - rect.x) / rect.width;
+			$top.val(top.toFixed(2));
+			$left.val(left.toFixed(2)).trigger('change');
+			
+			icon.style.left = left.toFixed(2) * 100 + "%";
+			icon.style.top = top.toFixed(2) * 100 + "%";
+		});		
 	}
 	
 	
@@ -308,47 +134,10 @@
 		*  @return	n/a
 		*/
 		
-		acf.add_action('ready append', function( $el ){
-			
-			// search $el for fields of type 'focal_point'
-			acf.get_fields({ type : 'focal_point'}, $el).each(function(){
-				
-				initialize_field( $(this) );
-				
-			});
-			
-		});
+		acf.addAction('new_field/type=focal_point', function( field ){
+			initialize_field( field.$el );
+		});		
 		
-		
-	} else {
-		
-		
-		/*
-		*  acf/setup_fields (ACF4)
-		*
-		*  This event is triggered when ACF adds any new elements to the DOM. 
-		*
-		*  @type	function
-		*  @since	1.0.0
-		*  @date	01/01/12
-		*
-		*  @param	event		e: an event object. This can be ignored
-		*  @param	Element		postbox: An element which contains the new HTML
-		*
-		*  @return	n/a
-		*/
-		
-		$(document).on('acf/setup_fields', function(e, postbox){
-			
-			$(postbox).find('.field[data-field_type="focal_point"]').each(function(){
-				
-				initialize_field( $(this) );
-				
-			});
-		
-		});
-	
-	
 	}
 
 
