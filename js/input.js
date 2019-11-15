@@ -38,18 +38,9 @@
 		// When we've loaded an image, draw the canvas.
 		// (either on dom load or adding new image from WP media manager)
 		$img.on("load", function(e){
-				icon.style.display = 'block';
-				icon.style.left = (values.left * 100) + "%";
-				icon.style.top = (values.top * 100) + "%";
-			}).each(function() {
-			
-			// Make sure to trigger load event by triggering load
-			// after jquery has done it's iteration
-			if (this.complete) {
-				$(this).load();
-			}
+			icon.style.left = (values.left * 100) + "%";
+			icon.style.top = (values.top * 100) + "%";
 		});
-
 
 		// When we click the add image button...
 		$add.on('click', function(){
@@ -80,11 +71,11 @@
 					src = attachment;
 				}
 
-				// Set image to new src, triggering on load
+				// Set image to new src
 				$img.attr('src', src.url);
 
 				// Update our post values and values obj
-				$id.val(attachment.id);
+				$id.val(attachment.id).trigger('change');
 				values.id = attachment.id;
 
 			});
@@ -106,10 +97,11 @@
 			// Reset our post values
 			$id.val('');
 			$top.val('');
-			$left.val('');
-
-			// And our values obj, but just one value (to check later) will do.
-			values.top = null;
+			$left.val('').trigger('change');
+			
+			// reset to default
+			icon.style.left = null;
+			icon.style.top = null;
 		});
 
 		// When we click on the image...
@@ -118,11 +110,11 @@
 			var top = (e.clientY - rect.y) / rect.height;
 			var left = (e.clientX - rect.x) / rect.width;
 			$top.val(top.toFixed(2));
-			$left.val(left.toFixed(2));
+			$left.val(left.toFixed(2)).trigger('change');
 			
 			icon.style.left = left.toFixed(2) * 100 + "%";
 			icon.style.top = top.toFixed(2) * 100 + "%";
-		}, false);		
+		});		
 	}
 	
 	
@@ -142,47 +134,10 @@
 		*  @return	n/a
 		*/
 		
-		acf.add_action('ready append', function( $el ){
-			
-			// search $el for fields of type 'focal_point'
-			acf.get_fields({ type : 'focal_point'}, $el).each(function(){
-				
-				initialize_field( $(this) );
-				
-			});
-			
-		});
+		acf.addAction('new_field/type=focal_point', function( field ){
+			initialize_field( field.$el );
+		});		
 		
-		
-	} else {
-		
-		
-		/*
-		*  acf/setup_fields (ACF4)
-		*
-		*  This event is triggered when ACF adds any new elements to the DOM. 
-		*
-		*  @type	function
-		*  @since	1.0.0
-		*  @date	01/01/12
-		*
-		*  @param	event		e: an event object. This can be ignored
-		*  @param	Element		postbox: An element which contains the new HTML
-		*
-		*  @return	n/a
-		*/
-		
-		$(document).on('acf/setup_fields', function(e, postbox){
-			
-			$(postbox).find('.field[data-field_type="focal_point"]').each(function(){
-				
-				initialize_field( $(this) );
-				
-			});
-		
-		});
-	
-	
 	}
 
 
